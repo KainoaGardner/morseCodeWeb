@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import Home from "./home/home.tsx";
-import Learn from "./home/learn.tsx";
+import Learn from "./learn/learn.tsx";
 import Test from "./test/test.tsx";
 import Translator from "./translator/translator.tsx";
 import Settings from "./home/settings.tsx";
