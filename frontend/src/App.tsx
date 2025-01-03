@@ -8,6 +8,9 @@ import Settings from "./home/settings.tsx";
 
 function App() {
   const [page, setPage] = useState("home");
+  const [freq, setFreq] = useState(800);
+  const [volume, setVolume] = useState(0.2);
+  const [duration, setDuration] = useState(800);
 
   return (
     <>
@@ -18,12 +21,28 @@ function App() {
       <button onClick={() => setPage("translator")}>Translator</button>
       <button onClick={() => setPage("settings")}>Settings</button>
 
-      <Tab page={page} />
+      <Tab
+        page={page}
+        freq={freq}
+        setFreq={setFreq}
+        volume={volume}
+        setVolume={setVolume}
+        duration={duration}
+        setDuration={setDuration}
+      />
     </>
   );
 }
 
-function Tab({ page }) {
+function Tab({
+  page,
+  freq,
+  setFreq,
+  volume,
+  setVolume,
+  duration,
+  setDuration,
+}) {
   switch (page) {
     case "learn":
       return <Learn />;
@@ -31,10 +50,17 @@ function Tab({ page }) {
       return <Test />;
     case "translator":
       return <Translator />;
-
     case "settings":
-      return <Settings />;
-
+      return (
+        <Settings
+          freq={freq}
+          setFreq={setFreq}
+          volume={volume}
+          setVolume={setVolume}
+          duration={duration}
+          setDuration={setDuration}
+        />
+      );
     default:
       return <Home />;
   }
