@@ -1,5 +1,9 @@
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
+function timeout(time: number) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
+
 //THIS IS BAD I SHOULDNT RESET THE VARIBLES EVERY SINGLE DOT
 function beep(volume: number, freq: number, type: string, duration: number) {
   const oscillator = audioCtx.createOscillator();
@@ -19,31 +23,35 @@ function beep(volume: number, freq: number, type: string, duration: number) {
   }, duration);
 }
 
-function Play(
+async function Play(
   word: string,
   volume: number,
   freq: number,
   type: string,
-  duration: number,
+  wpm: number,
+  audioPlaying: bool,
+  setAudioPlaying,
 ) {
-  let i = 0;
-  const len = word.length - 1;
-  let tempDuration = duration;
+  if (audioPlaying) {
+    return;
+  }
 
-  const intervalId = setInterval(() => {
-    if (i === len) {
-      clearInterval(intervalId);
-    }
+  setAudioPlaying(true);
+
+  const duration = (60 / (50 * wpm)) * 1000;
+
+  for (let i = 0; i < word.length; i++) {
     if (word[i] === "·") {
       beep(volume, freq, type, duration);
-      tempDuration = duration;
+      await timeout(duration * 2);
     } else if (word[i] === "−") {
       beep(volume, freq, type, duration * 3);
-      tempDuration = duration * 3;
+      await timeout(duration * 4);
     }
-    console.log(word[i]);
-    i++;
-  }, tempDuration + duration);
+  }
+
+  await timeout(duration * 3);
+  setAudioPlaying(false);
 }
 
 export default Play;

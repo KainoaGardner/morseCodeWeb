@@ -1,6 +1,15 @@
 import Play from "../morseAudio/audio.tsx";
 
-function Settings({ freq, setFreq, volume, setVolume, duration, setDuration }) {
+function Settings({
+  freq,
+  setFreq,
+  volume,
+  setVolume,
+  wpm,
+  setWpm,
+  audioPlaying,
+  setAudioPlaying,
+}) {
   return (
     <>
       <h1>Audio</h1>
@@ -24,17 +33,29 @@ function Settings({ freq, setFreq, volume, setVolume, duration, setDuration }) {
       />
       <p>{volume}</p>
 
-      <label htmlFor="duration">Dot Duration</label>
+      <label htmlFor="duration">Words per minute</label>
       <input
         id="duration"
         type="range"
         min="0"
-        max="5000"
-        onChange={(e) => setDuration(e.target.value)}
+        max="50"
+        onChange={(e) => setWpm(e.target.value)}
       />
-      <p>{duration} ms</p>
+      <p>{wpm} wpm</p>
 
-      <button onClick={() => Play("···", volume, freq, "sine", duration)}>
+      <button
+        onClick={() =>
+          Play(
+            "·−·−·−",
+            volume,
+            freq,
+            "sine",
+            wpm,
+            audioPlaying,
+            setAudioPlaying,
+          )
+        }
+      >
         Letter Test
       </button>
     </>

@@ -5,12 +5,14 @@ import Learn from "./learn/learn.tsx";
 import Test from "./test/test.tsx";
 import Translator from "./translator/translator.tsx";
 import Settings from "./home/settings.tsx";
+import AudioBar from "./morseAudio/audioBar.tsx";
 
 function App() {
   const [page, setPage] = useState("home");
   const [freq, setFreq] = useState(800);
   const [volume, setVolume] = useState(0.2);
-  const [duration, setDuration] = useState(800);
+  const [wpm, setWpm] = useState(12);
+  const [audioPlaying, setAudioPlaying] = useState(false);
 
   return (
     <>
@@ -20,6 +22,7 @@ function App() {
       <button onClick={() => setPage("test")}>Test</button>
       <button onClick={() => setPage("translator")}>Translator</button>
       <button onClick={() => setPage("settings")}>Settings</button>
+      <AudioBar audioPlaying={audioPlaying} />
 
       <Tab
         page={page}
@@ -27,8 +30,10 @@ function App() {
         setFreq={setFreq}
         volume={volume}
         setVolume={setVolume}
-        duration={duration}
-        setDuration={setDuration}
+        wpm={wpm}
+        setWpm={setWpm}
+        audioPlaying={audioPlaying}
+        setAudioPlaying={setAudioPlaying}
       />
     </>
   );
@@ -40,12 +45,25 @@ function Tab({
   setFreq,
   volume,
   setVolume,
-  duration,
-  setDuration,
+  wpm,
+  setWpm,
+  audioPlaying,
+  setAudioPlaying,
 }) {
   switch (page) {
     case "learn":
-      return <Learn />;
+      return (
+        <Learn
+          freq={freq}
+          setFreq={setFreq}
+          volume={volume}
+          setVolume={setVolume}
+          wpm={wpm}
+          setWpm={setWpm}
+          audioPlaying={audioPlaying}
+          setAudioPlaying={setAudioPlaying}
+        />
+      );
     case "test":
       return <Test />;
     case "translator":
@@ -57,8 +75,10 @@ function Tab({
           setFreq={setFreq}
           volume={volume}
           setVolume={setVolume}
-          duration={duration}
-          setDuration={setDuration}
+          wpm={wpm}
+          setWpm={setWpm}
+          audioPlaying={audioPlaying}
+          setAudioPlaying={setAudioPlaying}
         />
       );
     default:
