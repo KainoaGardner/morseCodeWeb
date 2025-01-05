@@ -14,6 +14,8 @@ function App() {
   const [wpm, setWpm] = useState(12);
   const [audioPlaying, setAudioPlaying] = useState(false);
 
+  const [morseType, setMorseType] = useState("standard");
+
   return (
     <>
       <div className="nav"></div>
@@ -34,6 +36,8 @@ function App() {
         setWpm={setWpm}
         audioPlaying={audioPlaying}
         setAudioPlaying={setAudioPlaying}
+        morseType={morseType}
+        setMorseType={setMorseType}
       />
     </>
   );
@@ -49,6 +53,8 @@ function Tab({
   setWpm,
   audioPlaying,
   setAudioPlaying,
+  morseType,
+  setMorseType,
 }) {
   switch (page) {
     case "learn":
@@ -62,12 +68,14 @@ function Tab({
           setWpm={setWpm}
           audioPlaying={audioPlaying}
           setAudioPlaying={setAudioPlaying}
+          morseType={morseType}
+          setMorseType={setMorseType}
         />
       );
     case "test":
       return <Test />;
     case "translator":
-      return <Translator />;
+      return <Translator morseType={morseType} setMorseType={setMorseType} />;
     case "settings":
       return (
         <Settings

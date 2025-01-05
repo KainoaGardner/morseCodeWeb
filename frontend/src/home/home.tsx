@@ -17,27 +17,32 @@ function Home() {
   );
 }
 
+function handleFeedback(event, feedback, setFeedback, setSent) {
+  event.preventDefault();
+  sendFeedback(feedback);
+  setFeedback("");
+  setSent(true);
+}
+
 function Feedback() {
   const [feedback, setFeedback] = useState("");
-  const inputRef = useRef();
-
-  const handleFeedback = (event) => {
-    event.preventDefault();
-    setFeedback(inputRef.current.value);
-    sendFeedback(inputRef.current.value);
-    inputRef.current.value = "";
-  };
+  const [sent, setSent] = useState(false);
 
   return (
     <>
       <h2>Feedback</h2>
-      <form onSubmit={handleFeedback}>
+      <form onSubmit={(e) => handleFeedback(e, feedback, setFeedback, setSent)}>
         <label htmlFor="feedback">Enter some feedback</label>
-        <input type="text" ref={inputRef} id="feedback" name="feedback" />
+        <input
+          onChange={(e) => setFeedback(e.target.value)}
+          type="text"
+          value={feedback}
+          id="feedback"
+        />
         <input type="submit" />
       </form>
 
-      <p>{feedback ? "Feedback has been sent. Thanks for the feedback" : ""}</p>
+      <p>{sent ? "Feedback has been sent. Thanks for the feedback" : ""}</p>
     </>
   );
 }

@@ -1,11 +1,17 @@
 import { useState } from "react";
 import MorseType from "../home/morseType.tsx";
-import Standard from "./standard/standard.tsx";
-import Wabun from "./wabun/wabun.tsx";
+import Standard from "./standard.tsx";
+import Wabun from "./wabun.tsx";
 
-function Learn({ freq, volume, wpm, audioPlaying, setAudioPlaying }) {
-  const [morseType, setMorseType] = useState("standard");
-
+function Learn({
+  freq,
+  volume,
+  wpm,
+  audioPlaying,
+  setAudioPlaying,
+  morseType,
+  setMorseType,
+}) {
   return (
     <>
       <h1>Learn</h1>

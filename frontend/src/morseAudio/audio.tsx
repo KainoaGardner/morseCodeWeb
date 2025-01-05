@@ -38,19 +38,24 @@ async function Play(
 
   setAudioPlaying(true);
 
-  const duration = (60 / (50 * wpm)) * 1000;
+  if (word === "/") {
+    await timeout(duration * 7);
+  } else if (word === " ") {
+    await timeout(duration * 3);
+  } else {
+    const duration = (60 / (50 * wpm)) * 1000;
 
-  for (let i = 0; i < word.length; i++) {
-    if (word[i] === "·") {
-      beep(volume, freq, type, duration);
-      await timeout(duration * 2);
-    } else if (word[i] === "−") {
-      beep(volume, freq, type, duration * 3);
-      await timeout(duration * 4);
+    for (let i = 0; i < word.length; i++) {
+      if (word[i] === "·") {
+        beep(volume, freq, type, duration);
+        await timeout(duration * 2);
+      } else if (word[i] === "−") {
+        beep(volume, freq, type, duration * 3);
+        await timeout(duration * 4);
+      }
     }
   }
 
-  await timeout(duration * 3);
   setAudioPlaying(false);
 }
 
