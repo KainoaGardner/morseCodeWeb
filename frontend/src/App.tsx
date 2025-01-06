@@ -75,7 +75,20 @@ function Tab({
     case "test":
       return <Test />;
     case "translator":
-      return <Translator morseType={morseType} setMorseType={setMorseType} />;
+      return (
+        <Translator
+          freq={freq}
+          setFreq={setFreq}
+          volume={volume}
+          setVolume={setVolume}
+          wpm={wpm}
+          setWpm={setWpm}
+          audioPlaying={audioPlaying}
+          setAudioPlaying={setAudioPlaying}
+          morseType={morseType}
+          setMorseType={setMorseType}
+        />
+      );
     case "settings":
       return (
         <Settings

@@ -1,5 +1,5 @@
 import standardMaps from "../maps/standardMaps.tsx";
-import Play from "../morseAudio/audio.tsx";
+import { Play } from "../morseAudio/audio.tsx";
 
 function Standard({ freq, volume, wpm, audioPlaying, setAudioPlaying }) {
   return (

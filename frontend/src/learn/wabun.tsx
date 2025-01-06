@@ -1,5 +1,5 @@
 import wabunMaps from "../maps/wabunMaps.tsx";
-import Play from "../morseAudio/audio.tsx";
+import { Play } from "../morseAudio/audio.tsx";
 
 function Wabun({ freq, volume, wpm, audioPlaying, setAudioPlaying }) {
   return (

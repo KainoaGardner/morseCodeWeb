@@ -1,4 +1,4 @@
-import Play from "../morseAudio/audio.tsx";
+import { Play } from "../morseAudio/audio.tsx";
 
 function Settings({
   freq,
