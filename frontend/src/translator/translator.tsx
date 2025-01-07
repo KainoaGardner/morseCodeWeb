@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
 
 import MorseType from "../home/morseType.tsx";
-import { TranslateToMorse, TranslateFromMorse } from "./standard.tsx";
+import {
+  TranslateToMorseStandard,
+  TranslateFromMorseStandard,
+} from "./standard.tsx";
+
+import { TranslateToMorseWabun, TranslateFromMorseWabun } from "./wabun.tsx";
+
 import { Play, Timeout } from "../morseAudio/audio.tsx";
 
 function Translator({
@@ -26,10 +32,11 @@ function Translator({
 
       <MorseType setMorseType={setMorseType} />
       <ChooseType morseType={morseType} />
+      <button>訳す</button>
 
       <label htmlFor="text">Enter Text</label>
       <input
-        onChange={(e) =>
+        onInput={(e) =>
           handleToMorse(
             e,
             toMorse,
@@ -46,7 +53,7 @@ function Translator({
 
       <label htmlFor="morse">Enter Morse code</label>
       <input
-        onChange={(e) =>
+        onInput={(e) =>
           handleFromMorse(
             e,
             toMorse,
@@ -95,9 +102,9 @@ function handleToMorse(
   setToMorse(e.target.value);
 
   if (morseType === "wabun") {
-    // setFromMorse(StandardTranslate(e.target.value, fromMorse, morseType));
+    setFromMorse(TranslateToMorseWabun(e.target.value));
   } else {
-    setFromMorse(TranslateToMorse(e.target.value));
+    setFromMorse(TranslateToMorseStandard(e.target.value));
   }
 }
 
@@ -120,9 +127,9 @@ function handleFromMorse(
   setFromMorse(input);
 
   if (morseType === "wabun") {
-    // setFromMorse(StandardTranslate(e.target.value, fromMorse, morseType));
+    setToMorse(TranslateFromMorseWabun(input));
   } else {
-    setToMorse(TranslateFromMorse(input));
+    setToMorse(TranslateFromMorseStandard(input));
   }
 }
 

@@ -1,6 +1,6 @@
 import standardMaps from "../maps/standardMaps.tsx";
 
-function TranslateToMorse(toMorse): string {
+function TranslateToMorseStandard(toMorse): string {
   const cleanToMorse = toMorse.replace(/\s+/g, " ").trim().toUpperCase();
   if (!checkToMorseLetters(cleanToMorse)) {
     return "Invalid Input";
@@ -43,7 +43,7 @@ function checkToMorseLetters(toMorse): bool {
   return true;
 }
 
-function TranslateFromMorse(fromMorse): string {
+function TranslateFromMorseStandard(fromMorse): string {
   const cleanFromMorse = fromMorse.replace(/\s+/g, " ").trim().toUpperCase();
 
   let result = "";
@@ -84,21 +84,4 @@ function TranslateFromMorse(fromMorse): string {
   return result.trim();
 }
 
-function checkFromMorseLetters(fromMorse): bool {
-  for (let i = 0; i < fromMorse.length; i++) {
-    if (
-      fromMorse[i] != "/" &&
-      fromMorse[i] != " " &&
-      !standardMaps.lettersR.has(fromMorse[i]) &&
-      !standardMaps.numbersR.has(fromMorse[i]) &&
-      !standardMaps.symbolsR.has(fromMorse[i]) &&
-      !standardMaps.prosignsR.has(fromMorse[i])
-    ) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-export { TranslateToMorse, TranslateFromMorse };
+export { TranslateToMorseStandard, TranslateFromMorseStandard };
