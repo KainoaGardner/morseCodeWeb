@@ -61,11 +61,8 @@ function Tab({
       return (
         <Learn
           freq={freq}
-          setFreq={setFreq}
           volume={volume}
-          setVolume={setVolume}
           wpm={wpm}
-          setWpm={setWpm}
           audioPlaying={audioPlaying}
           setAudioPlaying={setAudioPlaying}
           morseType={morseType}
@@ -73,16 +70,23 @@ function Tab({
         />
       );
     case "test":
-      return <Test />;
+      return (
+        <Test
+          freq={freq}
+          volume={volume}
+          wpm={wpm}
+          audioPlaying={audioPlaying}
+          setAudioPlaying={setAudioPlaying}
+          morseType={morseType}
+          setMorseType={setMorseType}
+        />
+      );
     case "translator":
       return (
         <Translator
           freq={freq}
-          setFreq={setFreq}
           volume={volume}
-          setVolume={setVolume}
           wpm={wpm}
-          setWpm={setWpm}
           audioPlaying={audioPlaying}
           setAudioPlaying={setAudioPlaying}
           morseType={morseType}

@@ -1,17 +1,36 @@
 import { useState } from "react";
+import MorseType from "../home/morseType.tsx";
+import SingleLetter from "./singleLetter.tsx";
 
-function Test() {
-  const [wabun, setWabun] = useState(false);
+function Test({
+  freq,
+  volume,
+  wpm,
+  audioPlaying,
+  setAudioPlaying,
+  morseType,
+  setMorseType,
+}) {
   const [type, setType] = useState("letter");
 
   return (
     <>
+      <MorseType setMorseType={setMorseType} />
       <Type />
     </>
   );
 }
 
-function Type({ type }) {
+function Type({
+  type,
+  freq,
+  volume,
+  wpm,
+  audioPlaying,
+  setAudioPlaying,
+  morseType,
+  setMorseType,
+}) {
   switch (type) {
     case "read":
       return <h1>Read</h1>;
@@ -19,7 +38,16 @@ function Type({ type }) {
       return <h1>Write</h1>;
 
     default:
-      return <h1>Single Letter</h1>;
+      return (
+        <SingleLetter
+          freq={freq}
+          volume={volume}
+          wpm={wpm}
+          audioPlaying={audioPlaying}
+          setAudioPlaying={setAudioPlaying}
+          morseType={morseType}
+        />
+      );
   }
 }
 
