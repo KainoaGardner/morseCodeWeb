@@ -25,6 +25,8 @@ function SingleLetter({
   const [score, setScore] = useState(0);
   const [questionCount, setQuestionCount] = useState(0);
 
+  const [multiChoice, setMultiChoice] = useState(false);
+
   return (
     <>
       <h1>Single Letter</h1>
@@ -85,8 +87,18 @@ function SingleLetter({
       </button>
 
       <h3>{word}</h3>
+      <form onSubmit={(e) => handleAnswer(e)}>
+        <input type="text" name="answer" />
+        <button type="submit">Answer</button>
+      </form>
     </>
   );
+}
+
+function handleAnswer(event) {
+  event.preventDefault();
+  const formData = new FormData(event.currentTarget);
+  console.log(formData.get("answer"));
 }
 
 function getWord(morseType, fromMorse, letters, numbers, symbols, prosigns) {
