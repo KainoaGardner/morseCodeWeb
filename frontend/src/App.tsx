@@ -13,7 +13,6 @@ function App() {
   const [volume, setVolume] = useState(0.2);
   const [wpm, setWpm] = useState(12);
   const [audioPlaying, setAudioPlaying] = useState(false);
-
   const [morseType, setMorseType] = useState("standard");
 
   return (
