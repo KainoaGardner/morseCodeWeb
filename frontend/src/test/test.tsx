@@ -16,7 +16,15 @@ function Test({
   return (
     <>
       <MorseType setMorseType={setMorseType} />
-      <Type />
+      <Type
+        type={type}
+        freq={freq}
+        volume={volume}
+        wpm={wpm}
+        audioPlaying={audioPlaying}
+        setAudioPlaying={setAudioPlaying}
+        morseType={morseType}
+      />
     </>
   );
 }
@@ -29,7 +37,6 @@ function Type({
   audioPlaying,
   setAudioPlaying,
   morseType,
-  setMorseType,
 }) {
   switch (type) {
     case "read":

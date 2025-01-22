@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import standardMaps from "../maps/standardMaps.tsx";
 import wabunMaps from "../maps/wabunMaps.tsx";
+import { Play } from "../morseAudio/audio.tsx";
 
 function SingleLetter({
   morseType,
@@ -25,7 +26,16 @@ function SingleLetter({
   const [score, setScore] = useState(0);
   const [questionCount, setQuestionCount] = useState(0);
 
+  const [answer, setAnswer] = useState("");
+
   const [multiChoice, setMultiChoice] = useState(false);
+
+  const [answered, setAnswered] = useState(false);
+  const [correct, setCorrect] = useState(false);
+
+  useEffect(() => {
+    Play(word, volume, freq, "sine", wpm, audioPlaying, setAudioPlaying);
+  }, [word]);
 
   return (
     <>
@@ -40,28 +50,92 @@ function SingleLetter({
         <input
           type="checkbox"
           id="letters"
-          onChange={(e) => setLetters(e.target.checked)}
+          onChange={(e) =>
+            handleSettingChange(
+              "letters",
+              e,
+              setLetters,
+              setNumbers,
+              setSymbols,
+              setProsigns,
+              morseType,
+              fromMorse,
+              letters,
+              numbers,
+              symbols,
+              prosigns,
+              setWord,
+            )
+          }
           defaultChecked={letters}
         />
         <label htmlFor="letters">Letters</label>
         <input
           type="checkbox"
           id="numbers"
-          onChange={(e) => setNumbers(e.target.checked)}
+          onChange={(e) =>
+            handleSettingChange(
+              "numbers",
+              e,
+              setLetters,
+              setNumbers,
+              setSymbols,
+              setProsigns,
+              morseType,
+              fromMorse,
+              letters,
+              numbers,
+              symbols,
+              prosigns,
+              setWord,
+            )
+          }
           defaultChecked={numbers}
         />
         <label htmlFor="numbers">Numbers</label>
         <input
           type="checkbox"
           id="symbols"
-          onChange={(e) => setSymbols(e.target.checked)}
+          onChange={(e) =>
+            handleSettingChange(
+              "symbols",
+              e,
+              setLetters,
+              setNumbers,
+              setSymbols,
+              setProsigns,
+              morseType,
+              fromMorse,
+              letters,
+              numbers,
+              symbols,
+              prosigns,
+              setWord,
+            )
+          }
           defaultChecked={symbols}
         />
         <label htmlFor="symbols">Symbols</label>
         <input
           type="checkbox"
           id="prosigns"
-          onChange={(e) => setProsigns(e.target.checked)}
+          onChange={(e) =>
+            handleSettingChange(
+              "prosigns",
+              e,
+              setLetters,
+              setNumbers,
+              setSymbols,
+              setProsigns,
+              morseType,
+              fromMorse,
+              letters,
+              numbers,
+              symbols,
+              prosigns,
+              setWord,
+            )
+          }
           defaultChecked={prosigns}
         />
         <label htmlFor="prosigns">Prosigns</label>
@@ -76,29 +150,104 @@ function SingleLetter({
       <p>{symbols ? "symbols" : "no"}</p>
       <p>{prosigns ? "pro" : "no"}</p>
 
+      <h3>{word}</h3>
       <button
         onClick={() =>
-          setWord(
-            getWord(morseType, fromMorse, letters, numbers, symbols, prosigns),
-          )
+          Play(word, volume, freq, "sine", wpm, audioPlaying, setAudioPlaying)
         }
       >
-        Test
+        Play Audio
       </button>
 
-      <h3>{word}</h3>
-      <form onSubmit={(e) => handleAnswer(e)}>
-        <input type="text" name="answer" />
-        <button type="submit">Answer</button>
-      </form>
+      <AnswerBox
+        correct={correct}
+        setCorrect={setCorrect}
+        answered={answered}
+        setAnswered={setAnswered}
+        answer={answer}
+        setAnswer={setAnswer}
+        word={word}
+        setWord={setWord}
+        score={score}
+        setScore={setScore}
+        questionCount={questionCount}
+        setQuestionCount={setQuestionCount}
+        morseType={morseType}
+        fromMorse={fromMorse}
+        letters={letters}
+        numbers={numbers}
+        symbols={symbols}
+        prosigns={prosigns}
+      />
     </>
   );
 }
 
-function handleAnswer(event) {
-  event.preventDefault();
-  const formData = new FormData(event.currentTarget);
-  console.log(formData.get("answer"));
+function handleSettingChange(
+  setting,
+  e,
+  setLetters,
+  setNumbers,
+  setSymbols,
+  setProsigns,
+  morseType,
+  fromMorse,
+  letters,
+  numbers,
+  symbols,
+  prosigns,
+  setWord,
+) {
+  setWord(getWord(morseType, fromMorse, letters, numbers, symbols, prosigns));
+  switch (setting) {
+    case "letters":
+      setLetters(e.target.checked);
+      break;
+    case "numbers":
+      setNumbers(e.target.checked);
+      break;
+    case "symbols":
+      setSymbols(e.target.checked);
+      break;
+    case "prosigns":
+      setProsigns(e.target.checked);
+      break;
+  }
+}
+
+function handleAnswerText(e, setAnswer) {
+  setAnswer(e.target.value);
+}
+
+function handleAnswer(
+  answered,
+  setAnswered,
+  answer,
+  setAnswer,
+  word,
+  setWord,
+  score,
+  setScore,
+  questionCount,
+  setQuestionCount,
+  setCorrect,
+) {
+  setQuestionCount(questionCount + 1);
+  setAnswered(!answered);
+
+  answer = answer.toUpperCase();
+
+  if (
+    word === standardMaps.letters.get(answer) ||
+    word === standardMaps.numbers.get(answer) ||
+    word === standardMaps.symbols.get(answer) ||
+    word === standardMaps.prosigns.get(answer)
+  ) {
+    setScore(score + 1);
+    setCorrect(true);
+  } else {
+    setCorrect(false);
+  }
 }
 
 function getWord(morseType, fromMorse, letters, numbers, symbols, prosigns) {
@@ -138,6 +287,139 @@ function getWord(morseType, fromMorse, letters, numbers, symbols, prosigns) {
     return word[1];
   } else {
     return word[0];
+  }
+}
+
+function nextWord(
+  setAnswer,
+  setAnswered,
+  setWord,
+  morseType,
+  fromMorse,
+  letters,
+  numbers,
+  symbols,
+  prosigns,
+) {
+  setWord(getWord(morseType, fromMorse, letters, numbers, symbols, prosigns));
+  setAnswer("");
+  setAnswered(false);
+}
+
+function AnswerBox({
+  correct,
+  setCorrect,
+  answered,
+  setAnswered,
+  answer,
+  setAnswer,
+  word,
+  setWord,
+  score,
+  setScore,
+  questionCount,
+  setQuestionCount,
+  morseType,
+  fromMorse,
+  letters,
+  numbers,
+  symbols,
+  prosigns,
+}) {
+  let wordAnswer;
+
+  if (standardMaps.lettersR.has(word)) {
+    wordAnswer = standardMaps.lettersR.get(word);
+  } else if (standardMaps.numbersR.has(word)) {
+    wordAnswer = standardMaps.numbersR.get(word);
+  } else if (standardMaps.symbolsR.has(word)) {
+    wordAnswer = standardMaps.symbolsR.get(word);
+  } else if (standardMaps.prosignsR.has(word)) {
+    wordAnswer = standardMaps.prosignsR.get(word);
+  }
+
+  switch (answered) {
+    case true:
+      if (correct) {
+        return (
+          <>
+            <h3>{wordAnswer}</h3>
+            <h3>Correct</h3>
+            <button
+              onClick={() =>
+                nextWord(
+                  setAnswer,
+                  setAnswered,
+                  setWord,
+                  morseType,
+                  fromMorse,
+                  letters,
+                  numbers,
+                  symbols,
+                  prosigns,
+                )
+              }
+            >
+              Continue
+            </button>
+          </>
+        );
+      } else {
+        return (
+          <>
+            <h3>{wordAnswer}</h3>
+            <h3>Incorrect</h3>
+            <button
+              onClick={() =>
+                nextWord(
+                  setAnswer,
+                  setAnswered,
+                  setWord,
+                  morseType,
+                  fromMorse,
+                  letters,
+                  numbers,
+                  symbols,
+                  prosigns,
+                )
+              }
+            >
+              Continue
+            </button>
+          </>
+        );
+      }
+
+    case false:
+      return (
+        <>
+          <input
+            type="text"
+            name="answer"
+            onInput={(e) => handleAnswerText(e, setAnswer)}
+            value={answer}
+          />
+          <button
+            onClick={() =>
+              handleAnswer(
+                answered,
+                setAnswered,
+                answer,
+                setAnswer,
+                word,
+                setWord,
+                score,
+                setScore,
+                questionCount,
+                setQuestionCount,
+                setCorrect,
+              )
+            }
+          >
+            Answer
+          </button>
+        </>
+      );
   }
 }
 
