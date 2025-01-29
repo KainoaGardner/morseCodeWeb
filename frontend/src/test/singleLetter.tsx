@@ -60,6 +60,7 @@ function SingleLetter({
               setProsigns,
               morseType,
               fromMorse,
+              setFromMorse,
               letters,
               numbers,
               symbols,
@@ -83,6 +84,7 @@ function SingleLetter({
               setProsigns,
               morseType,
               fromMorse,
+              setFromMorse,
               letters,
               numbers,
               symbols,
@@ -106,6 +108,7 @@ function SingleLetter({
               setProsigns,
               morseType,
               fromMorse,
+              setFromMorse,
               letters,
               numbers,
               symbols,
@@ -129,6 +132,7 @@ function SingleLetter({
               setProsigns,
               morseType,
               fromMorse,
+              setFromMorse,
               letters,
               numbers,
               symbols,
@@ -140,7 +144,26 @@ function SingleLetter({
         />
         <label htmlFor="prosigns">Prosigns</label>
 
-        <button onClick={() => setFromMorse(!fromMorse)}>
+        <button
+          onClick={(e) =>
+            handleSettingChange(
+              "fromMorse",
+              e,
+              setLetters,
+              setNumbers,
+              setSymbols,
+              setProsigns,
+              morseType,
+              fromMorse,
+              setFromMorse,
+              letters,
+              numbers,
+              symbols,
+              prosigns,
+              setWord,
+            )
+          }
+        >
           {fromMorse ? "From Morse" : "To Morse"}
         </button>
       </div>
@@ -151,6 +174,7 @@ function SingleLetter({
       <p>{prosigns ? "pro" : "no"}</p>
 
       <h3>{word}</h3>
+
       <button
         onClick={() =>
           Play(word, volume, freq, "sine", wpm, audioPlaying, setAudioPlaying)
@@ -192,13 +216,13 @@ function handleSettingChange(
   setProsigns,
   morseType,
   fromMorse,
+  setFromMorse,
   letters,
   numbers,
   symbols,
   prosigns,
   setWord,
 ) {
-  setWord(getWord(morseType, fromMorse, letters, numbers, symbols, prosigns));
   switch (setting) {
     case "letters":
       setLetters(e.target.checked);
@@ -212,7 +236,12 @@ function handleSettingChange(
     case "prosigns":
       setProsigns(e.target.checked);
       break;
+    case "fromMorse":
+      setFromMorse(!fromMorse);
+      break;
   }
+
+  setWord(getWord(morseType, fromMorse, letters, numbers, symbols, prosigns));
 }
 
 function handleAnswerText(e, setAnswer) {
